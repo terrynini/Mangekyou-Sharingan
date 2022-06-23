@@ -8,6 +8,7 @@ import qualified Text.Parsec.Expr as Ex
 import Text.Parsec.String (Parser)
 import qualified Text.Parsec.Token
 import Text.Parsec.Expr (buildExpressionParser)
+import GHC.Integer (floatFromInteger)
 
 -- original definition: binary s f accos = Ex.Infix (reservedOp s >> return (BinOp f)) accos
 -- the accos can be omitted due to currying
@@ -20,6 +21,7 @@ table = [[binary "*" Times Ex.AssocLeft, binary "/" Divide Ex.AssocLeft],
 expr :: Parser Expr
 expr = buildExpressionParser table factor
 
+-- these functions try to use lexeme to parse the tokens then pack them into data type
 {-
 floating :: Parser Expr
 floating = do
@@ -30,13 +32,23 @@ floating = do
 floating :: Parser Expr
 floating = do Float <$> float
 
+-- the only datatype in Kaleidoscope is float
+int :: Parser Expr
+int = do Float . fromInteger <$> integer
+
+variable :: Parser Expr
+variable = do Var <$> identifier
+
+-- def
+-- extern
+-- op
+
 -- explain of <|> : http://book.realworldhaskell.org/read/using-parsec.html
+-- use try to look ahead and not consume anything in stream
 factor :: Parser Expr
 factor = try floating
-
-
--- defn :: Parser Expr
--- defn = expr
+        <|> try int
+        <|> variable
 
 parseExpr :: String -> Either ParseError Expr
 parseExpr = parse expr "<stdin>"

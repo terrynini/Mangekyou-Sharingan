@@ -18,7 +18,7 @@ lexer = Token.makeTokenParser style
           Token.reservedNames = reservedNames
         }
 
--- define primitive tokens
+-- use different lexeme to define primitive tokens
 integer :: Parser Integer
 integer = Token.integer lexer
 
