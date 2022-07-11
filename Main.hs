@@ -1,8 +1,7 @@
--- stack ghc -- Main.hs -o test
+-- stack ghc -- Main.hs -o main
 
 module Main where
 
-import Control.Arrow (ArrowLoop (loop))
 import Control.Monad.Trans
 import Parser
 import System.Console.Haskeline
