@@ -1,5 +1,2 @@
 **/.DS_Store
-*.o
-*.hi
-test
-main
+.stack-work/

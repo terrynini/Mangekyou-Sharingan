@@ -1,5 +1,3 @@
--- stack ghc -- Main.hs -o main
-
 module Main where
 
 import Control.Monad.Trans

@@ -1,0 +1,72 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.34.4.
+--
+-- see: https://github.com/sol/hpack
+
+name:           Mangekyou-Sharingan
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/terrynini/Mangekyou-Sharingan#readme>
+homepage:       https://github.com/terrynini/Mangekyou-Sharingan#readme
+bug-reports:    https://github.com/terrynini/Mangekyou-Sharingan/issues
+author:         terrynini
+maintainer:     terrynini38514@gmail.com
+build-type:     Simple
+
+source-repository head
+  type: git
+  location: https://github.com/terrynini/Mangekyou-Sharingan
+
+library
+  exposed-modules:
+      Lexer
+      Main
+      Parser
+      Syntax
+  other-modules:
+      Paths_Mangekyou_Sharingan
+  hs-source-dirs:
+      src
+  build-depends:
+      base >=4.7 && <5
+    , haskeline
+    , integer-gmp
+    , llvm-hs
+    , mtl
+    , parsec
+  default-language: Haskell2010
+
+executable Mangekyou-Sharingan-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_Mangekyou_Sharingan
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      Mangekyou-Sharingan
+    , base >=4.7 && <5
+    , haskeline
+    , integer-gmp
+    , llvm-hs
+    , mtl
+    , parsec
+  default-language: Haskell2010
+
+test-suite Mangekyou-Sharingan-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_Mangekyou_Sharingan
+  hs-source-dirs:
+      test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      Mangekyou-Sharingan
+    , base >=4.7 && <5
+    , haskeline
+    , integer-gmp
+    , llvm-hs
+    , mtl
+    , parsec
+  default-language: Haskell2010
