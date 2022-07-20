@@ -1,25 +1,30 @@
+{-# LANGUAGE OverloadedStrings #-}          -- for easy converting string literal to ShortByteString
+{-# LANGUAGE GeneralizedNewtypeDeriving #-} -- for deriving MonadState
+
 module Codegen where
 
-{--
-stack install type-level
-root@a27cbd2de9e2:/# stack install llvm-hs
---}
-
 import Control.Monad.State
+import LLVM.AST
 
 double :: Type
 double = FloatingPointType 64 IEEE
 
--- use the state monad to maintain the state http://cnhaskell.com/chp/14.html#the-state-monad
+-- the performance about newtype and data :https://stackoverflow.com/questions/5889696/difference-between-data-and-newtype-in-haskell
+-- use the state monad to maintain the state http://cnhaskell.com/chp/14.html#the-state-monad, https://wiki.haskell.org/State_Monad, https://acm.wustl.edu/functional/state-monad.php
+-- newtype can only has one field in record
 newtype CodeGen a = CodeGen { runCodeGen :: State CodeGenState a}
     deriving (Functor, Applicative, Monad, MonadState CodeGenState)
 
 -- the state record for CodeGen state monad
 data CodeGenState =
     CodeGenState {
-    currentBlock :: Name        -- the Name of current working block, just string
+    currentBlock :: Name            -- the Name of current working block, just string
 } deriving Show
 
+data BlockState =
+    BlockState {
+        instructions :: [Instruction] -- instructions in a basic block
+}
 newtype LLVM a = LLVM (State AST.Module a)
     deriving (Functor, Applicative, Monad, MonadState AST.Module)
 
@@ -35,7 +40,7 @@ setBlock name = do
 {-
 The member `currentBlock` of record type is a function with type CodeGenState -> Name,
 and the gets is `gets f = do { x <- get; return (f x) }`,
-hence the final result is `CodeGen Name`
+hence the type of getBlock is `CodeGen Name`, which is `CodeGenState -> (Name, CodeGenState)`
 -}
 getBlock :: CodeGen Name
 getBlock = gets currentBlock

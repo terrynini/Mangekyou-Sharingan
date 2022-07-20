@@ -19,6 +19,7 @@ source-repository head
 
 library
   exposed-modules:
+      Emit
       Lexer
       Main
       Parser
